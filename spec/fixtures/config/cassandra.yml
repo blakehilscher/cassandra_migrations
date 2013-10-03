@@ -6,6 +6,17 @@ development:
     class: "SimpleStrategy"
     replication_factor: 1
 
+development_credentials:
+  host: "127.0.0.1"
+  port: 9042
+  keyspace: "cassandra_migrations_development"
+  replication:
+    class: "SimpleStrategy"
+    replication_factor: 1
+  credentials:
+    username: "cass"
+    password: "andra"
+
 test:
   host: "127.0.0.1"
   port: 9042

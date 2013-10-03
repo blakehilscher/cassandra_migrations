@@ -62,7 +62,7 @@ module CassandraMigrations
       Rails.logger.try(:info, "Connecting to Cassandra on #{Config.host}:#{Config.port}")
       
       begin
-        self.client = Cql::Client.connect(:host => Config.host, :port => Config.port)
+        self.client = Cql::Client.connect(Config.connection_options)
       rescue Cql::Io::ConnectionError => e
         raise Errors::ConnectionError, e.message      
       end

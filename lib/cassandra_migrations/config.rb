@@ -9,6 +9,16 @@ module CassandraMigrations
       load_config unless config    
       config[method_sym.to_s]
     end
+
+    def self.connection_options
+      options = {
+        :host => host,
+        :port => port
+      }
+
+      options.merge!(:credentials => credentials) if credentials
+      options
+    end
     
   private
 

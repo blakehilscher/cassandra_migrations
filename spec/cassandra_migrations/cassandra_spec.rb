@@ -40,6 +40,24 @@ describe CassandraMigrations::Cassandra do
       result.should_not be_nil
       result.should be_a(CassandraMigrations::Cassandra::QueryResult)
     end
+
+    describe "with credentials" do
+      before do
+        Rails.stub(:env).and_return ActiveSupport::StringInquirer.new("development_credentials")
+      end
+
+      it 'should connect to cassandra using host, port, and credentials configured' do
+        cql_client_mock = mock('cql_client')
+        Cql::Client.should_receive(:connect).
+          with(:host => '127.0.0.1',
+               :port => 9042,
+               :credentials => {"username" => "cass", "password" => "andra"}).
+          and_return(cql_client_mock)
+        cql_client_mock.should_receive(:execute).with('anything').and_return(nil)
+
+        CassandraMigrations::Cassandra.execute('anything').should be_nil
+      end
+    end
   end
   
   describe '.use' do
@@ -50,8 +68,30 @@ describe CassandraMigrations::Cassandra do
     
       CassandraMigrations::Cassandra.use('anything').should be_nil
     end
+
+    describe "with credentials" do
+      before do
+        Rails.stub(:env).and_return ActiveSupport::StringInquirer.new("development_credentials")
+      end
+
+      it 'should connect to cassandra using host, port, and credentials configured' do
+        cql_client_mock = mock('cql_client')
+        Cql::Client.should_receive(:connect).
+          with(:host => '127.0.0.1',
+               :port => 9042,
+               :credentials => {"username" => "cass", "password" => "andra"}).
+          and_return(cql_client_mock)
+        cql_client_mock.should_receive(:use).with('anything').and_return(nil)
+
+        CassandraMigrations::Cassandra.use('anything').should be_nil
+      end
+    end
     
     it "should raise exception if configured keyspace does not exist" do
+      cql_client_mock = mock('cql_client')
+      Cql::Client.should_receive(:connect).with(:host => '127.0.0.1', :port => 9042).and_return(cql_client_mock)
+      cql_client_mock.should_receive(:use).with('anything') { raise Cql::QueryError.new("code", "msg", "cql") }
+
       expect {
         CassandraMigrations::Cassandra.use('anything')
       }.to raise_exception CassandraMigrations::Errors::UnexistingKeyspaceError
