@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    cassandra_migrations (0.0.4)
+    cassandra_migrations (0.0.5)
       colorize (~> 0.5)
-      cql-rb (~> 1.1.0.rc)
+      cql-rb (~> 1.1)
       rails (~> 3.2)
       rake (~> 10)
 
@@ -41,7 +41,7 @@ GEM
     builder (3.0.4)
     colorize (0.6.0)
     columnize (0.3.6)
-    cql-rb (1.1.0.rc0)
+    cql-rb (1.1.0)
     debugger (1.5.0)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)

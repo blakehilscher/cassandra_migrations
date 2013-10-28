@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cassandra_migrations'
-  s.version     = '0.0.4'
+  s.version     = '0.0.5'
   s.date        = '2013-07-21'
   s.license     = 'MIT'
   s.summary     = "Cassandra schema management for a multi-environment developer."
@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.executables = ['prepare_for_cassandra']
   
   # s.add_dependency: Production dependencies
-  s.add_dependency 'cql-rb', '~>1.1.0.rc'
+  s.add_dependency 'cql-rb', '~>1.1'
   s.add_dependency 'rake', '~>10'
   s.add_dependency 'rails', '~>3.2'
   s.add_dependency 'colorize', '~>0.5'
