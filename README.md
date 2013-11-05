@@ -27,7 +27,7 @@ The native transport protocol (sometimes called binary protocol, or CQL protocol
 
 ### Prepare Project
 
-Configure CassandraMigrations using the #configure method in an config/initializer :
+Configure CassandraMigrations in config/initializer/cassandra.rb
 
 ```ruby
 
