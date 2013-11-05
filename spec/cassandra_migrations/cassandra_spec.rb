@@ -41,23 +41,6 @@ describe CassandraMigrations::Cassandra do
       result.should be_a(CassandraMigrations::Cassandra::QueryResult)
     end
 
-    describe "with credentials" do
-      before do
-        Rails.stub(:env).and_return ActiveSupport::StringInquirer.new("development_credentials")
-      end
-
-      it 'should connect to cassandra using host, port, and credentials configured' do
-        cql_client_mock = mock('cql_client')
-        Cql::Client.should_receive(:connect).
-          with(:host => '127.0.0.1',
-               :port => 9042,
-               :credentials => {"username" => "cass", "password" => "andra"}).
-          and_return(cql_client_mock)
-        cql_client_mock.should_receive(:execute).with('anything').and_return(nil)
-
-        CassandraMigrations::Cassandra.execute('anything').should be_nil
-      end
-    end
   end
   
   describe '.use' do
@@ -67,24 +50,6 @@ describe CassandraMigrations::Cassandra do
       cql_client_mock.should_receive(:use).with('anything').and_return(nil)
     
       CassandraMigrations::Cassandra.use('anything').should be_nil
-    end
-
-    describe "with credentials" do
-      before do
-        Rails.stub(:env).and_return ActiveSupport::StringInquirer.new("development_credentials")
-      end
-
-      it 'should connect to cassandra using host, port, and credentials configured' do
-        cql_client_mock = mock('cql_client')
-        Cql::Client.should_receive(:connect).
-          with(:host => '127.0.0.1',
-               :port => 9042,
-               :credentials => {"username" => "cass", "password" => "andra"}).
-          and_return(cql_client_mock)
-        cql_client_mock.should_receive(:use).with('anything').and_return(nil)
-
-        CassandraMigrations::Cassandra.use('anything').should be_nil
-      end
     end
     
     it "should raise exception if configured keyspace does not exist" do
@@ -100,15 +65,7 @@ describe CassandraMigrations::Cassandra do
   
   describe ".start!" do
     it "should use configured keyspace" do
-      CassandraMigrations::Cassandra.should_receive(:use).with('cassandra_migrations_development')
-      CassandraMigrations::Cassandra.start!
-    end
-    
-    it "should log missing configuration file or similar error, but swallow exception" do
-      Rails.stub(:root).and_return Pathname.new("spec/fake_fixture_path")
-      
-      Rails.logger = mock('logger')
-      Rails.logger.should_receive(:warn).with('There is no config/cassandra.yml. Skipping connection to Cassandra...')
+      CassandraMigrations::Cassandra.should_receive(:use).with('cassandra_migrations_test')
       CassandraMigrations::Cassandra.start!
     end
   end

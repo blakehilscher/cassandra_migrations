@@ -1,1 +1,1 @@
-rvm use ruby-2.0.0-p195@cassandra_migrations
+rvm use ruby-2.0.0-p0@cassandra_migrations --create

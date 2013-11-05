@@ -5,9 +5,8 @@ module CassandraMigrations
   
     mattr_accessor :config
     
-    def self.method_missing(method_sym, *arguments, &block)
-      load_config unless config    
-      config[method_sym.to_s]
+    def self.method_missing(method_sym, *arguments, &block) 
+      CassandraMigrations.configuration.send(method_sym)
     end
 
     def self.connection_options
@@ -20,19 +19,36 @@ module CassandraMigrations
       options
     end
     
-  private
-
-    def self.load_config
-      begin
-        self.config = YAML.load_file(Rails.root.join("config", "cassandra.yml"))[Rails.env]
-      
-        if config.nil?
-          raise Errors::MissingConfigurationError, "No configuration for #{Rails.env} environment! Complete your config/cassandra.yml."
-        end
-      rescue Errno::ENOENT
-        raise Errors::MissingConfigurationError
-      end
-    end
-  
   end
+  
+  class << self
+    attr_accessor :configuration
+  end
+  
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
+  
+  def self.configure
+    yield(configuration)
+    true
+  end
+  
+  class Configuration
+  
+    attr_accessor :host, :port, :keyspace, :replication, :credentials
+    
+    def initialize
+      @host = "127.0.0.1"
+      @port = 9042
+      @keyspace = "cassandra_migrations_test"
+      @replication = { 'class' => "SimpleStrategy", 'replication_factor' => 1 }
+    end
+    
+    def to_h
+      self.attributes
+    end
+    
+  end
+  
 end
