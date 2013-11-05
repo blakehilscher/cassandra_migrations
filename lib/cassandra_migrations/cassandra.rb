@@ -44,7 +44,7 @@ module CassandraMigrations
 
     def self.execute(cql)
       connect_to_server unless client
-      result = client.execute(cql, Config.consistency)
+      result = client.execute(cql, Config.consistency )
       QueryResult.new(result) if result
     end  
     
@@ -53,6 +53,9 @@ module CassandraMigrations
     def self.connect_to_server
       begin
         self.client = Cql::Client.connect(Config.connection_options)
+        use(Config.keyspace)
+        self.client
+        
       rescue Cql::Io::ConnectionError => e
         raise Errors::ConnectionError, e.message      
       end
