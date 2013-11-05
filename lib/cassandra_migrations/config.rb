@@ -11,10 +11,10 @@ module CassandraMigrations
 
     def self.connection_options
       options = {
-        :host => host,
-        :port => port
+        host:         host,
+        port:         port,
+        consistency:  consistency,
       }
-
       options.merge!(:credentials => credentials) if credentials
       options
     end
@@ -36,13 +36,14 @@ module CassandraMigrations
   
   class Configuration
   
-    attr_accessor :host, :port, :keyspace, :replication, :credentials
+    attr_accessor :host, :port, :keyspace, :replication, :credentials, :consistency
     
     def initialize
       @host = "127.0.0.1"
       @port = 9042
       @keyspace = "cassandra_migrations_test"
       @replication = { 'class' => "SimpleStrategy", 'replication_factor' => 1 }
+      @consistency = :one
     end
     
     def to_h

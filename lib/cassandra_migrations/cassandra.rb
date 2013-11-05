@@ -14,14 +14,7 @@ module CassandraMigrations
     mattr_accessor :client
     
     def self.start!
-      begin
-        # setup keyspace use
-        use(Config.keyspace)
-      rescue Errors::MissingConfigurationError
-        # It's acceptable to not have a configuration file, that's why we rescue this exception.
-        # On the other hand, if the user try to execute a query this same exception won't be rescued
-        Rails.logger.try(:warn, "There is no config/cassandra.yml. Skipping connection to Cassandra...") 
-      end
+      use(Config.keyspace)
     end
     
     def self.restart!
@@ -51,16 +44,13 @@ module CassandraMigrations
 
     def self.execute(cql)
       connect_to_server unless client
-      Rails.logger.try(:info, "\e[1;35m [Cassandra Migrations] \e[0m #{cql.to_s}")
-      result = client.execute(cql)
+      result = client.execute(cql, Config.consistency)
       QueryResult.new(result) if result
     end  
     
   private
     
     def self.connect_to_server
-      Rails.logger.try(:info, "Connecting to Cassandra on #{Config.host}:#{Config.port}")
-      
       begin
         self.client = Cql::Client.connect(Config.connection_options)
       rescue Cql::Io::ConnectionError => e
