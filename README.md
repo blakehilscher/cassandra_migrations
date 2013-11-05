@@ -17,7 +17,7 @@ This enables you to use Cassandra in an organized way, combined with your Active
 
 # Installation
 
-    gem install --prerelease cassandra_migrations
+    gem 'cassandra_migrations','~> 0.2', git: 'git@github.com:blakehilscher/cassandra_migrations.git'
 
 # Quick start
 
@@ -27,22 +27,17 @@ The native transport protocol (sometimes called binary protocol, or CQL protocol
 
 ### Prepare Project
 
-In your rails root directory:
-
-    prepare_for_cassandra .
-    
-### Configuring cassandra access
-
-Open your newly-created `config/cassandra.yml` and configure the database name for each of the environments, just like you would do for your regular database. The other options defaults should be enough for now.
+Configure CassandraMigrations using the #configure method in an config/initializer :
 
 ```ruby
-development:
-  host: '127.0.0.1'
-  port: 9042
-  keyspace: 'my_keyspace_name'
-  replication:
-    class: 'SimpleStrategy'
-    replication_factor: 1
+
+CassandraMigrations.configure do |c|
+  c.host          = 'localhost'
+  c.keyspace      = 'your_keyspace'
+  c.replication   = { 'class'  => 'SimpleStrategy', 'replication_factor' => 1 }
+  c.credentials   = { 'username' => 'cass', 'password' => 'andra' }
+end
+
 ```
 
 ### Create your database
