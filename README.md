@@ -1,11 +1,22 @@
 [![Gem Version](https://badge.fury.io/rb/cassandra_migrations.png)](http://badge.fury.io/rb/cassandra_migrations)
 
+Blake's Changes
+====================
+
+* Add CassandraMigrations.configure{|c| ... }
+* Remove expectation of rails environment.
+* Remove expectation of specific config file location.
+
+
+
+
+
 Cassandra Migrations
 ====================
 
 **Cassandra schema management for a multi-environment developer.**
 
-A gem to manage Cassandra database schema for Rails. This gem offers migrations and environment specific databases out-of-the-box for Rails users.
+A gem to manage Cassandra database schemas.
 
 This enables you to use Cassandra in an organized way, combined with your ActiveRecord relational database.
 
@@ -13,7 +24,6 @@ This enables you to use Cassandra in an organized way, combined with your Active
 
 - Cassandra 1.2 or higher with the native_transport_protocol turned on ([Instructions to install cassandra locally](https://github.com/hsgubert/cassandra_migrations/wiki/Preparing-standalone-Cassandra-in-local-machine))
 - Ruby 1.9
-- Rails 3.2 _(not tested with Rails 4 yet, volunteers are welcome!)_
 
 # Installation
 

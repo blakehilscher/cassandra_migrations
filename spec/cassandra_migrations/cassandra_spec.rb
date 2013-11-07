@@ -4,13 +4,11 @@ require 'spec_helper'
 describe CassandraMigrations::Cassandra do
   
   before do
-    Rails.stub(:root).and_return Pathname.new("spec/fixtures")
     Rails.stub(:env).and_return ActiveSupport::StringInquirer.new("development")
   end
   
   after do
     CassandraMigrations::Cassandra.client = nil
-    CassandraMigrations::Config.config = nil
   end
   
   describe '.execute' do

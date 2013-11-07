@@ -50,7 +50,7 @@ module CassandraMigrations
       end
     end
     
-private
+    private
   
     def self.up(migration_name)
       # load migration
@@ -77,7 +77,7 @@ private
     end
     
     def self.get_all_migration_names
-      Dir[Rails.root.join("db", "cassandra_migrate/[0-9]*_*.rb")]
+      Dir[ migration_files_path ]
     end
   
     def self.get_class_from_migration_name(filename)
@@ -87,5 +87,10 @@ private
     def self.get_version_from_migration_name(migration_name)
       migration_name.match(/([0-9]{14})_.+\.rb$/).captures.first.to_i
     end
+    
+    def self.migration_files_path
+      File.join( CassandraMigrations.configuration.migrations_path, "[0-9]*_*.rb" )
+    end
+    
   end
 end
