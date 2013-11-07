@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'benchmark'
 require 'cassandra_migrations/migration/table_operations'
 require 'cassandra_migrations/migration/column_operations'
 
@@ -54,6 +55,8 @@ module CassandraMigrations
       when :up   then announce_migration "migrating"
       when :down then announce_migration "reverting"
       end
+
+      time = Benchmark.measure { send(direction) }
 
       case direction
       when :up   then announce_migration "migrated (%.4fs)" % time.real; puts
