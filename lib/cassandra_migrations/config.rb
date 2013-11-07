@@ -55,5 +55,9 @@ module CassandraMigrations
       @replication = { 'class' => "SimpleStrategy", 'replication_factor' => 1 }
     end
     
+    def consistency=(value)
+      @consistency = value.to_sym
+    end
+    
   end
 end
