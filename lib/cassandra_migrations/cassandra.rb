@@ -10,8 +10,6 @@ module CassandraMigrations
   module Cassandra
     extend Queries
     extend KeyspaceOperations
-  
-    mattr_accessor :client
     
     def self.start!
       use(Config.keyspace)
@@ -47,6 +45,13 @@ module CassandraMigrations
       result = client.execute(cql, Config.consistency )
       QueryResult.new(result) if result
     end  
+    
+    def self.client=(value)
+      @client = value
+    end
+    def self.client
+      @client
+    end
     
   private
     
