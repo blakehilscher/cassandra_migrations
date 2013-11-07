@@ -55,8 +55,6 @@ module CassandraMigrations
       when :down then announce_migration "reverting"
       end
 
-      time = Benchmark.measure { send(direction) }
-
       case direction
       when :up   then announce_migration "migrated (%.4fs)" % time.real; puts
       when :down then announce_migration "reverted (%.4fs)" % time.real; puts
