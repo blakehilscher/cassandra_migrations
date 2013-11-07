@@ -1,3 +1,5 @@
+require "cassandra_migrations/version"
+
 Gem::Specification.new do |s|
   s.name        = 'cassandra_migrations'
   s.version     = CassandraMigrations::VERSION
