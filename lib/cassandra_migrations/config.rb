@@ -36,7 +36,7 @@ module CassandraMigrations
   
   class Configuration
   
-    attr_accessor :host, :port, :keyspace, :replication, :credentials, :consistency
+    attr_accessor :host, :port, :keyspace, :replication, :credentials, :consistency, :migrations_path
     
     def initialize
       @host = "127.0.0.1"
