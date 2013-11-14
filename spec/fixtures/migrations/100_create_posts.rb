@@ -10,7 +10,7 @@ class CreatePosts < CassandraMigrations::Migration
   end
 
   def down
-    drop_table :datasets
+    drop_table :posts
   end
   
 end
